@@ -2,7 +2,6 @@ import NextAuth, { type NextAuthOptions } from "next-auth";
 import Auth0Provider from "next-auth/providers/auth0";
 import { getServerSession } from "next-auth";
 
-// NextAuth yapılandırması
 export const authOptions: NextAuthOptions = {
   providers: [
     Auth0Provider({
@@ -20,7 +19,9 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, profile }) {
       const namespace = "https://yourapp.com";
 
-      const rawRoles = (profile as Record<string, unknown>)?.[`${namespace}/roles`];
+      const rawRoles = (profile as Record<string, unknown>)?.[
+        `${namespace}/roles`
+      ];
 
       if (Array.isArray(rawRoles)) {
         const firstRole = rawRoles[0];
@@ -42,9 +43,7 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 };
 
-// Middleware ve server component'lerde kullanmak için:
 export const auth = () => getServerSession(authOptions);
 
-// API route için export
 const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
