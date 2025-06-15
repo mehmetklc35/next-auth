@@ -1,63 +1,39 @@
 "use client";
 
-import { signIn, signOut, useSession } from "next-auth/react";
-import { LogIn, LogOut } from "lucide-react";
+import { signIn } from "next-auth/react";
+import Image from "next/image";
 
 export default function LoginPage() {
-  const { data: session, status } = useSession();
-
-  const handleLogout = () => {
-    signOut({ callbackUrl: "http://localhost:3000/login" });
-  };
-
-  if (status === "loading") {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-gray-600 text-lg">Loading...</div>
-      </div>
-    );
-  }
-
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-white to-green-100 px-4">
-      <div className="bg-white shadow-2xl rounded-2xl p-10 w-full max-w-md text-center transition-transform duration-300 hover:scale-[1.01]">
-        {session ? (
-          <>
-            <h1 className="text-3xl font-bold text-gray-800 mb-3">
-              Welcome Back,
-            </h1>
-            <p className="text-xl text-blue-700 font-semibold mb-6">
-              {session.user?.name || "User"}
-            </p>
-            <button
-              onClick={handleLogout}
-              className="flex items-center justify-center gap-2 w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-all duration-300"
-            >
-              <LogOut className="w-5 h-5" />
-              Logout
-            </button>
-          </>
-        ) : (
-          <>
-            <h1 className="text-2xl font-semibold text-gray-700 mb-4">
-              Welcome to the Platform
-            </h1>
-            <p className="text-sm text-gray-500 mb-6">
-              Please sign in with your Auth0 account
-            </p>
-            <button
-              onClick={() =>
-                signIn("auth0", {
-                  callbackUrl: "http://localhost:3000/dashboard",
-                })
-              }
-              className="flex items-center justify-center gap-2 w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-all duration-300"
-            >
-              <LogIn className="w-5 h-5" />
-              Login with Auth0
-            </button>
-          </>
-        )}
+    <main className="w-full h-screen flex">
+      {/* Left side - full height image */}
+      <div className="w-1/2 h-full relative">
+        <Image
+          src="/hero-login.avif" // 👈 Buraya görselini koy
+          alt="Auth Illustration"
+          fill
+          className="object-cover"
+          priority
+        />
+      </div>
+
+      {/* Right side - text area */}
+      <div className="w-1/2 h-full flex flex-col justify-center items-center bg-white text-center px-10">
+        <h1 className="text-5xl font-extrabold text-gray-800 mb-6">Welcome!</h1>
+        <p className="text-gray-600 text-lg mb-10 max-w-md">
+          Login securely with your Auth0 account to access your dashboard.
+        </p>
+        <button
+          onClick={() =>
+            signIn("auth0", {
+              callbackUrl: "http://localhost:3000/callback",
+              prompt: "login",
+            })
+          }
+          className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg shadow-lg transition-all"
+        >
+          Login with Auth0
+        </button>
       </div>
     </main>
   );

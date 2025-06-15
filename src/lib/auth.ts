@@ -2,26 +2,39 @@ import NextAuth, { type NextAuthOptions } from "next-auth";
 import Auth0Provider from "next-auth/providers/auth0";
 import { getServerSession } from "next-auth";
 
+// NextAuth yapılandırması
 export const authOptions: NextAuthOptions = {
   providers: [
     Auth0Provider({
       clientId: process.env.AUTH0_CLIENT_ID!,
       clientSecret: process.env.AUTH0_CLIENT_SECRET!,
       issuer: process.env.AUTH0_ISSUER,
+      authorization: {
+        params: {
+          scope: "openid profile email",
+        },
+      },
     }),
   ],
   callbacks: {
     async jwt({ token, profile }) {
       const namespace = "https://yourapp.com";
-      const roles = (profile as Record<string, any>)?.[`${namespace}/roles`];
-      if (Array.isArray(roles)) {
-        token.role = roles[0];
+
+      const rawRoles = (profile as Record<string, unknown>)?.[`${namespace}/roles`];
+
+      if (Array.isArray(rawRoles)) {
+        const firstRole = rawRoles[0];
+        if (typeof firstRole === "string") {
+          token.role = firstRole;
+        }
       }
+
       return token;
     },
+
     async session({ session, token }) {
-      if (session.user && token.role) {
-        session.user.role = token.role as string;
+      if (session.user && typeof token.role === "string") {
+        session.user.role = token.role;
       }
       return session;
     },
@@ -29,7 +42,9 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 };
 
+// Middleware ve server component'lerde kullanmak için:
 export const auth = () => getServerSession(authOptions);
 
+// API route için export
 const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
