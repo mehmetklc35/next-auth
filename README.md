@@ -1,36 +1,34 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🔐 Next.js ve Auth0 ile Rol Tabanlı Kimlik Doğrulama Sistemi
 
-## Getting Started
+Bu proje, **Next.js (App Router)** altyapısı üzerinde **Auth0** ve **NextAuth.js** kullanarak güvenli bir kullanıcı kimlik doğrulama sistemi sunar. Kullanıcılar rollerine göre (`admin` veya `user`) yönlendirilir ve yalnızca yetkili sayfalara erişebilir. Arayüzler modern ve duyarlı olacak şekilde **Tailwind CSS** ile tasarlanmıştır.
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Özellikler
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- ✅ Auth0 üzerinden oturum açma
+- ✅ Kişiselleştirilmiş giriş sayfası
+- ✅ Auth0 PostLogin Action ile dinamik rol atama (admin/user)
+- ✅ Kullanıcı rolü JWT token ve session'a aktarılır
+- ✅ Role göre içerik gösterimi (dashboard/admin)
+- ✅ `middleware.ts` ile route koruması
+- ✅ Tam oturum kapatma (NextAuth + Auth0 logout)
+- ✅ Şık ve responsive arayüz (TailwindCSS)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Demo Giriş Bilgileri
 
-## Learn More
+| Rol    | E-posta           | Açıklama                 |
+|--------|-------------------|--------------------------|
+| Admin  | admin@demo.com    | Yönetici yetkileri       |
+| User   | herhangi bir email| Normal kullanıcı rolü    |
 
-To learn more about Next.js, take a look at the following resources:
+> `admin@demo.com` adresi ile giriş yapan kullanıcıya otomatik olarak **admin** rolü atanır. Diğer kullanıcılara `user` rolü verilir.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Kullanılan Teknolojiler
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- [Next.js 14 (App Router)](https://nextjs.org/docs/app)
+- [NextAuth.js](https://next-auth.js.org/)
+- [Auth0](https://auth0.com/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- TypeScript
