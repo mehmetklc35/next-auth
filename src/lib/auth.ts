@@ -13,24 +13,15 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, profile }) {
       const namespace = "https://yourapp.com";
-
-      const rawRoles = (profile as Record<string, unknown>)?.[
-        `${namespace}/roles`
-      ];
-
-      if (Array.isArray(rawRoles)) {
-        const firstRole = rawRoles[0];
-        if (typeof firstRole === "string") {
-          token.role = firstRole;
-        }
+      const roles = (profile as Record<string, any>)?.[`${namespace}/roles`];
+      if (Array.isArray(roles)) {
+        token.role = roles[0];
       }
-
       return token;
     },
-
     async session({ session, token }) {
-      if (session.user && typeof token.role === "string") {
-        session.user.role = token.role;
+      if (session.user && token.role) {
+        session.user.role = token.role as string;
       }
       return session;
     },
